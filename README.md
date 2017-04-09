@@ -1,4 +1,5 @@
-# simon
-Simon Game for Free Code Camp's Front-End Certification
+# Simon Game
 
-Functional CodePen: http://codepen.io/c-herr/full/ALmadv/
+## Inspired by freeCodeCamp's Front-End Certification
+
+CodePen: http://codepen.io/c-herr/full/ALmadv/

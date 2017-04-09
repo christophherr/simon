@@ -1,30 +1,46 @@
 /* global $ */
 var Simon = {
-    count: 0,
-    activeSimon: [],
-    player: [],
-    strict: false,
-    start: false,
-    possibilities: ['#green', '#red', '#blue', '#yellow'],
-    sound: {
-        blue: new Audio(
-            'https://s3.amazonaws.com/freecodecamp/simonSound1.mp3'
-        ),
-        red: new Audio('https://s3.amazonaws.com/freecodecamp/simonSound2.mp3'),
-        yellow: new Audio(
-            'https://s3.amazonaws.com/freecodecamp/simonSound3.mp3'
-        ),
-        green: new Audio(
-            'https://s3.amazonaws.com/freecodecamp/simonSound4.mp3'
-        )
-    }
+        count: 0,
+        activeSimon: [],
+        player: [],
+        strict: false,
+        start: false,
+        possibilities: ['#green', '#red', '#blue', '#yellow'],
+        sound: {
+            blue: new Audio(
+                'https://s3.amazonaws.com/freecodecamp/simonSound1.mp3'
+            ),
+            red: new Audio(
+                'https://s3.amazonaws.com/freecodecamp/simonSound2.mp3'
+            ),
+            yellow: new Audio(
+                'https://s3.amazonaws.com/freecodecamp/simonSound3.mp3'
+            ),
+            green: new Audio(
+                'https://s3.amazonaws.com/freecodecamp/simonSound4.mp3'
+            )
+        }
+    },
+    resetPlayer,
+    stopGame,
+    resetGame,
+    startNewGame,
+    nextLevel,
+    addCount,
+    generateMove,
+    showCount,
+    sound,
+    addMove,
+    playGame,
+    playerMove,
+    playerMoveIncomplete,
+    check;
+
+resetPlayer = function() {
+    Simon.player = [];
 };
 
-function resetPlayer() {
-    Simon.player = [];
-}
-
-function stopGame() {
+stopGame = function() {
     Simon.activeSimon = [];
     Simon.count = 0;
     setTimeout(
@@ -33,16 +49,16 @@ function stopGame() {
         },
         200
     );
-}
+};
 
-function resetGame() {
+resetGame = function() {
     stopGame();
     addCount();
-}
+};
 
-function startNewGame() {
+startNewGame = function() {
     resetGame();
-}
+};
 
 $('.button-restart').click(function() {
     if (Simon.start === false) {
@@ -79,11 +95,11 @@ $('.button-reset').click(function() {
     startNewGame();
 });
 
-function nextLevel() {
+nextLevel = function() {
     addCount();
-}
+};
 
-function addCount() {
+addCount = function() {
     Simon.count++;
     setTimeout(
         function() {
@@ -93,15 +109,15 @@ function addCount() {
     );
 
     generateMove();
-}
+};
 
-function generateMove() {
+generateMove = function() {
     Simon.activeSimon.push(Simon.possibilities[Math.floor(Math.random() * 4)]);
 
     showCount();
-}
+};
 
-function showCount() {
+showCount = function() {
     var i = 0;
     var count = setInterval(
         function() {
@@ -115,9 +131,9 @@ function showCount() {
     );
 
     resetPlayer();
-}
+};
 
-function sound(color) {
+sound = function(color) {
     switch (color) {
         case '#green':
             Simon.sound.green.play();
@@ -131,17 +147,21 @@ function sound(color) {
         case '#yellow':
             Simon.sound.yellow.play();
             break;
+        default:
+            console.log(
+                'If default is reached, something is really wrong...'
+            );
     }
-}
+};
 
-function addMove(id) {
+addMove = function(id) {
     var panel = '#' + id;
     console.log(panel);
     Simon.player.push(panel);
     playerMove(panel);
-}
+};
 
-function playGame(panel) {
+playGame = function(panel) {
     $(panel).fadeTo(300, 1, function() {
         sound(panel);
         setTimeout(
@@ -151,7 +171,7 @@ function playGame(panel) {
             300
         );
     });
-}
+};
 
 $('.panel.green, .panel.red, .panel.blue, .panel.yellow').click(function() {
     $(this).fadeTo(350, 1, function() {
@@ -159,12 +179,12 @@ $('.panel.green, .panel.red, .panel.blue, .panel.yellow').click(function() {
     });
 });
 
-function playerMove(x) {
+playerMove = function(x) {
     if (Simon.start === false) {
         return;
     }
 
-    var playerMoveIncomplete = Simon.player[Simon.player.length - 1] !==
+    playerMoveIncomplete = Simon.player[Simon.player.length - 1] !==
         Simon.activeSimon[Simon.player.length - 1];
 
     if (playerMoveIncomplete) {
@@ -180,7 +200,7 @@ function playerMove(x) {
     } else {
         console.log('Good Move!');
         sound(x);
-        var check = Simon.player.length === Simon.activeSimon.length;
+        check = Simon.player.length === Simon.activeSimon.length;
         if (check) {
             if (Simon.count === 20) {
                 alert(
@@ -191,4 +211,4 @@ function playerMove(x) {
             }
         }
     }
-}
+};

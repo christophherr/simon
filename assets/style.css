@@ -1,132 +1,133 @@
 body {
-  background: #d1d1d1;
+    background: #d1d1d1;
 }
 
 h1 {
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 36px;
-  text-align: center;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 36px;
+    text-align: center;
 }
 
 .intro {
-  font-size: 20px;
-  text-align: center;
+    font-size: 20px;
+    text-align: center;
 }
 
 .gameboard {
-  position: absolute;
-  top:150px;
-  width:640px;
-  height: 640px;
-  z-index:0;
-  background-color: #000;
-  border-radius: 310px;
-  left: 50%;
-  margin-left: -320px;
- }
+    position: absolute;
+    top: 175px;
+    width: 640px;
+    height: 640px;
+    z-index: 0;
+    background-color: #000;
+    border-radius: 310px;
+    left: 50%;
+    margin-left: -320px;
+}
 
 .panel {
-  width: 300px;
-  height: 300px;
-  float: left;
-  z-index: 1;
-  margin: 10px;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
-  filter: alpha(opacity=60);
-  opacity: 0.6;
+    width: 300px;
+    height: 300px;
+    float: left;
+    z-index: 1;
+    margin: 10px;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
+    filter: alpha(opacity=60);
+    opacity: 0.6;
 }
 
 .panel.green {
-  border-top-left-radius: 300px;
-  background-color: #29e529;
+    border-top-left-radius: 300px;
+    background-color: #29e529;
 }
 
 .panel.red {
-  float: left;
-  border-top-right-radius: 300px;
-  background-color: #c41d1d;
-  clear: right;
+    float: left;
+    border-top-right-radius: 300px;
+    background-color: #c41d1d;
+    clear: right;
 }
 
 .panel.blue {
-  float: right;
-  border-bottom-right-radius: 300px;
-  background-color: #2a70ea;
+    float: right;
+    border-bottom-right-radius: 300px;
+    background-color: #2a70ea;
 }
 
 .panel.yellow {
-  float: left;
-  border-bottom-left-radius: 300px;
-  background-color: #d1ca10;
-  clear: left;
+    float: left;
+    border-bottom-left-radius: 300px;
+    background-color: #d1ca10;
+    clear: left;
 }
 
 .game-controls {
-  position: absolute;
-  top: 195px;
-  left: 195px;
-  width: 250px;
-  height: 250px;
-  background: #000;
-  border-radius: 125px;
-  z-index: 10;
+    position: absolute;
+    top: 195px;
+    left: 195px;
+    width: 250px;
+    height: 250px;
+    background: #000;
+    border-radius: 125px;
+    z-index: 10;
 }
 
 .steps {
-  color: #fff;
-  margin: 90px 0 0 25px;
-  width: 25%;
-  text-align: center;
-  display: inline-block;
+    color: #fff;
+    margin: 90px 0 0 25px;
+    width: 25%;
+    text-align: center;
+    display: inline-block;
 }
 
 .steps-number {
-  margin: 0 auto;
-  width: 65%;
-  color: red;
-  background: #444;
-  border: 2px #eee solid;
-  padding: 5px;
-  text-align: right;
-  font-weight: bold;
+    margin: 0 auto;
+    width: 65%;
+    color: red;
+    background: #444;
+    border: 2px #eee solid;
+    padding: 5px;
+    text-align: right;
+    font-weight: bold;
 }
 
-.restart, .strict {
-  color: #fff;
-  width: 25%;
-  text-align: center;
-  display: inline-block;
+.restart,
+.strict {
+    color: #fff;
+    width: 25%;
+    text-align: center;
+    display: inline-block;
 }
 
 .reset {
-  color: #fff;
-  width: 25%;
-  text-align: center;
-  margin: 0 auto
+    color: #fff;
+    width: 25%;
+    text-align: center;
+    margin: 0 auto
 }
 
 .button {
-  margin: 0 auto;
-  border-radius: 50px;
-  border: 2px #fff solid;
+    margin: 0 auto;
+    border-radius: 50px;
+    border: 2px #fff solid;
 }
 
 .button-restart {
-  background: red;
-  width: 25px;
-  height: 25px;
-}
- 
- .button-strict {
-  background: yellow;
-  width: 25px;
-  height: 25px;
+    background: red;
+    width: 25px;
+    height: 25px;
 }
 
- .button-reset {
-  background: blue;
-  width: 25px;
-  height: 25px;
+.button-strict {
+    background: yellow;
+    width: 25px;
+    height: 25px;
+}
+
+.button-reset {
+    background: blue;
+    width: 25px;
+    height: 25px;
 }
 
 .faded {

@@ -1,4 +1,4 @@
-/* global $ */
+/* global $, swal*/
 var Simon = {
     count: 0,
     activeSimon: [],
@@ -125,18 +125,39 @@ var Simon = {
         }
         if (playerMoveIncomplete) {
             if (this.strict) {
-                alert('Sorry, you made a mistake. Please start over.');
-                setTimeout(
-                    function() {
-                        Simon.resetGame();
+                swal({
+                    title: 'Oops... You made a mistake',
+                    text: 'You have to start over.',
+                    type: 'error',
+                    showCancelButton: true,
+                    confirmButtonText: 'Start over.',
+                    cancelButtonText: 'Stop playing.'
+                }).then(function() {
+                        setTimeout(
+                            function() {
+                                Simon.resetGame();
+                            },
+                            600
+                        );
                     },
-                    600
+                    function(dismiss) {
+                        if (dismiss === 'cancel') {
+                            Simon.start = false;
+                            Simon.strict = false;
+                            $('.button-strict').toggleClass('faded');
+                            $('.button-restart').toggleClass('faded').css('background', 'red');
+                            Simon.stopGame();
+                        }
+                    }
                 );
             } else {
-                alert(
-                    'Wrong move! Please look and listen carefully and correct your mistake.'
-                );
-                this.showCount();
+                swal({
+                    title: 'Wrong move!',
+                    text: 'Please look and listen carefully and correct your mistake.',
+                    type: 'error'
+                }).then(function() {
+                    Simon.showCount();
+                });
             }
         } else {
             console.log('Good Move!');
@@ -144,9 +165,35 @@ var Simon = {
 
             if (check) {
                 if (this.count === 20) {
-                    alert(
-                        'You won! Congratulations. Do you want to play another round?'
-                    );
+                    setTimeout(function() {
+                        swal({
+                            title: 'You won! Congratulations.',
+                            text: 'Do you want to play another round?',
+                            type: 'success',
+                            showCancelButton: true,
+                            confirmButtonText: 'Start a new game.',
+                            cancelButtonText: 'Stop playing.'
+                        }).then(function() {
+                                setTimeout(
+                                    function() {
+                                        Simon.resetGame();
+                                    },
+                                    600
+                                );
+                            },
+                            function(dismiss) {
+                                if (dismiss === 'cancel') {
+                                    Simon.start = false;
+                                    if (Simon.strict === true) {
+                                        Simon.strict = false;
+                                        $('.button-strict').toggleClass('faded');
+                                    }
+                                    $('.button-restart').toggleClass('faded').css('background', 'red');
+                                    Simon.stopGame();
+                                }
+                            }
+                        );
+                    }, 500);
                 } else {
                     setTimeout(function() {
                             Simon.nextLevel();

@@ -150,7 +150,11 @@ var Simon = {
                         'You won! Congratulations. Do you want to play another round?'
                     );
                 } else {
-                    this.nextLevel();
+                    setTimeout(function() {
+                            Simon.nextLevel();
+                        },
+                        500
+                    );
                 }
             }
         }

@@ -41,21 +41,9 @@ var Simon = {
             },
             500
         );
-        // this.addCount();
-    },
-    startNewGame: function() {
-        this.resetGame();
     },
     nextLevel: function() {
         this.addCount();
-    },
-    generateMove: function() {
-        setTimeout(function() {
-                Simon.activeSimon.push(Simon.possibilities[Math.floor(Math.random() * 4)]);
-                Simon.showCount();
-            },
-            600
-        );
     },
     addCount: function() {
         this.count++;
@@ -66,6 +54,16 @@ var Simon = {
             300
         );
         this.generateMove();
+    },
+    generateMove: function() {
+        setTimeout(function() {
+                Simon.activeSimon.push(
+                    Simon.possibilities[Math.floor(Math.random() * 4)]
+                );
+                Simon.showCount();
+            },
+            600
+        );
     },
     showCount: function() {
         var i = 0;
@@ -130,7 +128,7 @@ var Simon = {
                 alert('Sorry, you made a mistake. Please start over.');
                 setTimeout(
                     function() {
-                        Simon.startNewGame();
+                        Simon.resetGame();
                     },
                     600
                 );
@@ -171,7 +169,7 @@ $('.button-restart').click(function() {
     if (Simon.start === false) {
         Simon.start = true;
         $(this).toggleClass('faded').css('background', 'green');
-        Simon.startNewGame();
+        Simon.resetGame();
     } else {
         Simon.start = false;
         $(this).toggleClass('faded').css('background', 'red');
@@ -183,11 +181,20 @@ $('.button-strict').click(function() {
     if (Simon.strict === false) {
         Simon.strict = true;
         $(this).toggleClass('faded');
-        Simon.startNewGame();
+        if (Simon.start === false) {
+            // Alternatively, start the game
+            // Simon.start = true;
+            // $('.button-restart').toggleClass('faded').css('background', 'green');
+            return;
+        }
+        Simon.resetGame();
     } else {
         Simon.strict = false;
         $(this).toggleClass('faded');
-        Simon.startNewGame();
+        if (Simon.start === false) {
+            return;
+        }
+        Simon.resetGame();
     }
 });
 
@@ -199,5 +206,5 @@ $('.button-reset').click(function() {
     if (Simon.start === false) {
         return;
     }
-    Simon.startNewGame();
+    Simon.resetGame();
 });

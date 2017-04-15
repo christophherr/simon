@@ -35,7 +35,13 @@ var Simon = {
     },
     resetGame: function() {
         this.stopGame();
-        this.addCount();
+        setTimeout(
+            function() {
+                Simon.addCount();
+            },
+            500
+        );
+        // this.addCount();
     },
     startNewGame: function() {
         this.resetGame();
@@ -44,8 +50,12 @@ var Simon = {
         this.addCount();
     },
     generateMove: function() {
-        this.activeSimon.push(this.possibilities[Math.floor(Math.random() * 4)]);
-        this.showCount();
+        setTimeout(function() {
+                Simon.activeSimon.push(Simon.possibilities[Math.floor(Math.random() * 4)]);
+                Simon.showCount();
+            },
+            600
+        );
     },
     addCount: function() {
         this.count++;
@@ -53,7 +63,7 @@ var Simon = {
             function() {
                 $('.steps-number').html(Simon.count);
             },
-            200
+            300
         );
         this.generateMove();
     },
@@ -118,7 +128,12 @@ var Simon = {
         if (playerMoveIncomplete) {
             if (this.strict) {
                 alert('Sorry, you made a mistake. Please start over.');
-                this.startNewGame();
+                setTimeout(
+                    function() {
+                        Simon.startNewGame();
+                    },
+                    600
+                );
             } else {
                 alert(
                     'Wrong move! Please look and listen carefully and correct your mistake.'
@@ -142,13 +157,11 @@ var Simon = {
     }
 };
 
-
 $('.panel.green, .panel.red, .panel.blue, .panel.yellow').click(function() {
     $(this).fadeTo(350, 1, function() {
         $(this).fadeTo(250, 0.6);
     });
 });
-
 
 $('.button-restart').click(function() {
     if (Simon.start === false) {

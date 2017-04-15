@@ -10,9 +10,7 @@ var Simon = {
         blue: new Audio(
             'https://s3.amazonaws.com/freecodecamp/simonSound1.mp3'
         ),
-        red: new Audio(
-            'https://s3.amazonaws.com/freecodecamp/simonSound2.mp3'
-        ),
+        red: new Audio('https://s3.amazonaws.com/freecodecamp/simonSound2.mp3'),
         yellow: new Audio(
             'https://s3.amazonaws.com/freecodecamp/simonSound3.mp3'
         ),
@@ -26,57 +24,43 @@ var Simon = {
     stopGame: function() {
         this.activeSimon = [];
         this.count = 0;
-        setTimeout(
-            function() {
-                $('.steps-number').html(Simon.count);
-            },
-            200
-        );
+        setTimeout(function() {
+            $('.steps-number').html(Simon.count);
+        }, 200);
     },
     resetGame: function() {
         this.stopGame();
-        setTimeout(
-            function() {
-                Simon.addCount();
-            },
-            500
-        );
+        setTimeout(function() {
+            Simon.addCount();
+        }, 500);
     },
     nextLevel: function() {
         this.addCount();
     },
     addCount: function() {
         this.count++;
-        setTimeout(
-            function() {
-                $('.steps-number').html(Simon.count);
-            },
-            300
-        );
+        setTimeout(function() {
+            $('.steps-number').html(Simon.count);
+        }, 300);
         this.generateMove();
     },
     generateMove: function() {
         setTimeout(function() {
-                Simon.activeSimon.push(
-                    Simon.possibilities[Math.floor(Math.random() * 4)]
-                );
-                Simon.showCount();
-            },
-            600
-        );
+            Simon.activeSimon.push(
+                Simon.possibilities[Math.floor(Math.random() * 4)]
+            );
+            Simon.showCount();
+        }, 600);
     },
     showCount: function() {
         var i = 0;
-        var count = setInterval(
-            function() {
-                Simon.playGame(Simon.activeSimon[i]);
-                i++;
-                if (i >= Simon.activeSimon.length) {
-                    clearInterval(count);
-                }
-            },
-            800
-        );
+        var count = setInterval(function() {
+            Simon.playGame(Simon.activeSimon[i]);
+            i++;
+            if (i >= Simon.activeSimon.length) {
+                clearInterval(count);
+            }
+        }, 800);
         this.resetPlayer();
     },
     playSound: function(color) {
@@ -84,15 +68,19 @@ var Simon = {
             case '#green':
                 this.sound.green.play();
                 break;
+
             case '#red':
                 this.sound.red.play();
                 break;
+
             case '#blue':
                 this.sound.blue.play();
                 break;
+
             case '#yellow':
                 this.sound.yellow.play();
                 break;
+
             default:
                 console.log(
                     'If default is reached, something is really wrong...'
@@ -109,16 +97,15 @@ var Simon = {
     playGame: function(panel) {
         $(panel).fadeTo(300, 1, function() {
             Simon.playSound(panel);
-            setTimeout(
-                function() {
-                    $(panel).fadeTo(250, 0.6);
-                },
-                300
-            );
+            setTimeout(function() {
+                $(panel).fadeTo(250, 0.6);
+            }, 300);
         });
     },
-    playerMove: function(x) {
-        var playerMoveIncomplete = this.player[this.player.length - 1] !== this.activeSimon[this.player.length - 1];
+    playerMove: function(panel) {
+        var playerMoveIncomplete =
+            this.player[this.player.length - 1] !==
+            this.activeSimon[this.player.length - 1];
         var check = this.player.length === this.activeSimon.length;
         if (this.start === false) {
             return;
@@ -132,20 +119,20 @@ var Simon = {
                     showCancelButton: true,
                     confirmButtonText: 'Start over.',
                     cancelButtonText: 'Stop playing.'
-                }).then(function() {
-                        setTimeout(
-                            function() {
-                                Simon.resetGame();
-                            },
-                            600
-                        );
+                }).then(
+                    function() {
+                        setTimeout(function() {
+                            Simon.resetGame();
+                        }, 600);
                     },
                     function(dismiss) {
                         if (dismiss === 'cancel') {
                             Simon.start = false;
                             Simon.strict = false;
                             $('.button-strict').toggleClass('faded');
-                            $('.button-restart').toggleClass('faded').css('background', 'red');
+                            $('.button-restart')
+                                .toggleClass('faded')
+                                .css('background', 'red');
                             Simon.stopGame();
                         }
                     }
@@ -161,7 +148,7 @@ var Simon = {
             }
         } else {
             console.log('Good Move!');
-            this.playSound(x);
+            this.playSound(panel);
 
             if (check) {
                 if (this.count === 20) {
@@ -173,22 +160,24 @@ var Simon = {
                             showCancelButton: true,
                             confirmButtonText: 'Start a new game.',
                             cancelButtonText: 'Stop playing.'
-                        }).then(function() {
-                                setTimeout(
-                                    function() {
-                                        Simon.resetGame();
-                                    },
-                                    600
-                                );
+                        }).then(
+                            function() {
+                                setTimeout(function() {
+                                    Simon.resetGame();
+                                }, 600);
                             },
                             function(dismiss) {
                                 if (dismiss === 'cancel') {
                                     Simon.start = false;
                                     if (Simon.strict === true) {
                                         Simon.strict = false;
-                                        $('.button-strict').toggleClass('faded');
+                                        $('.button-strict').toggleClass(
+                                            'faded'
+                                        );
                                     }
-                                    $('.button-restart').toggleClass('faded').css('background', 'red');
+                                    $('.button-restart')
+                                        .toggleClass('faded')
+                                        .css('background', 'red');
                                     Simon.stopGame();
                                 }
                             }
@@ -196,10 +185,8 @@ var Simon = {
                     }, 500);
                 } else {
                     setTimeout(function() {
-                            Simon.nextLevel();
-                        },
-                        500
-                    );
+                        Simon.nextLevel();
+                    }, 500);
                 }
             }
         }

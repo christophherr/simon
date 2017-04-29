@@ -5,7 +5,12 @@ var Simon = {
     player: [],
     strict: false,
     start: false,
-    possibilities: ['#green', '#red', '#blue', '#yellow'],
+    possibilities: ['green', 'red', 'blue', 'yellow'],
+    countDisplay: document.getElementById('steps-number'),
+    restartButton: document.getElementById('button-restart'),
+    strictButton: document.getElementById('button-strict'),
+    resetButton: document.getElementById('button-reset'),
+    inputPanels: document.querySelectorAll('.panel'),
     sound: {
         blue: new Audio(
             'https://s3.amazonaws.com/freecodecamp/simonSound1.mp3'
@@ -25,7 +30,7 @@ var Simon = {
         this.activeSimon = [];
         this.count = 0;
         setTimeout(function() {
-            $('.steps-number').html(Simon.count);
+            Simon.countDisplay.innerHTML = Simon.count;
         }, 200);
     },
     resetGame: function() {
@@ -40,7 +45,7 @@ var Simon = {
     addCount: function() {
         this.count++;
         setTimeout(function() {
-            $('.steps-number').html(Simon.count);
+            Simon.countDisplay.innerHTML = Simon.count;
         }, 300);
         this.generateMove();
     },
@@ -55,7 +60,7 @@ var Simon = {
     showCount: function() {
         var i = 0;
         var count = setInterval(function() {
-            Simon.playGame(Simon.activeSimon[i]);
+            Simon.showPlayerMove(Simon.activeSimon[i]);
             i++;
             if (i >= Simon.activeSimon.length) {
                 clearInterval(count);
@@ -65,19 +70,19 @@ var Simon = {
     },
     playSound: function(color) {
         switch (color) {
-            case '#green':
+            case 'green':
                 this.sound.green.play();
                 break;
 
-            case '#red':
+            case 'red':
                 this.sound.red.play();
                 break;
 
-            case '#blue':
+            case 'blue':
                 this.sound.blue.play();
                 break;
 
-            case '#yellow':
+            case 'yellow':
                 this.sound.yellow.play();
                 break;
 
@@ -87,26 +92,21 @@ var Simon = {
                 );
         }
     },
-    addMove: function(id) {
-        var panel = '#' + id;
-        console.log(panel);
-        this.player.push(panel);
-        this.playerMove(panel);
-        this.playGame(panel);
-    },
-    playGame: function(panel) {
-        $(panel).fadeTo(300, 1, function() {
+    showPlayerMove: function(panel) {
+        setTimeout(function() {
+            document.getElementById(panel).style.opacity = 1;
             Simon.playSound(panel);
             setTimeout(function() {
-                $(panel).fadeTo(250, 0.6);
-            }, 300);
-        });
+                document.getElementById(panel).style.opacity = 0.6;
+            }, 450);
+        }, 350);
     },
     playerMove: function(panel) {
-        var playerMoveIncomplete =
+        var playerMoveIncomplete, check;
+        playerMoveIncomplete =
             this.player[this.player.length - 1] !==
             this.activeSimon[this.player.length - 1];
-        var check = this.player.length === this.activeSimon.length;
+        check = this.player.length === this.activeSimon.length;
         if (this.start === false) {
             return;
         }
@@ -129,10 +129,9 @@ var Simon = {
                         if (dismiss === 'cancel') {
                             Simon.start = false;
                             Simon.strict = false;
-                            $('.button-strict').toggleClass('faded');
-                            $('.button-restart')
-                                .toggleClass('faded')
-                                .css('background', 'red');
+                            Simon.strictButton.classList.toggle('faded');
+                            Simon.restartButton.classList.toggle('faded');
+                            Simon.restartButton.style.background = 'red';
                             Simon.stopGame();
                         }
                     }
@@ -147,7 +146,6 @@ var Simon = {
                 });
             }
         } else {
-            console.log('Good Move!');
             this.playSound(panel);
 
             if (check) {
@@ -171,14 +169,16 @@ var Simon = {
                                     Simon.start = false;
                                     if (Simon.strict === true) {
                                         Simon.strict = false;
-                                        $('.button-strict').toggleClass(
+                                        Simon.strictButton.classList.toggle(
                                             'faded'
                                         );
+                                        Simon.restartButton.classList.toggle(
+                                            'faded'
+                                        );
+                                        Simon.restartButton.style.background =
+                                            'red';
+                                        Simon.stopGame();
                                     }
-                                    $('.button-restart')
-                                        .toggleClass('faded')
-                                        .css('background', 'red');
-                                    Simon.stopGame();
                                 }
                             }
                         );
@@ -193,38 +193,35 @@ var Simon = {
     }
 };
 
-$('.panel.green, .panel.red, .panel.blue, .panel.yellow').click(function() {
-    $(this).fadeTo(350, 1, function() {
-        $(this).fadeTo(250, 0.6);
-    });
-});
-
-$('.button-restart').click(function() {
+Simon.restartButton.addEventListener('click', function() {
     if (Simon.start === false) {
         Simon.start = true;
-        $(this).toggleClass('faded').css('background', 'green');
+        this.classList.toggle('faded');
+        this.style.background = 'green';
         Simon.resetGame();
     } else {
         Simon.start = false;
-        $(this).toggleClass('faded').css('background', 'red');
+        this.classList.toggle('faded');
+        this.style.background = 'red';
         Simon.stopGame();
     }
 });
 
-$('.button-strict').click(function() {
+Simon.strictButton.addEventListener('click', function() {
     if (Simon.strict === false) {
         Simon.strict = true;
-        $(this).toggleClass('faded');
+        this.classList.toggle('faded');
         if (Simon.start === false) {
             // Alternatively, start the game
             // Simon.start = true;
-            // $('.button-restart').toggleClass('faded').css('background', 'green');
+            // restartButton.classList.toggle('faded');
+            // restartButton.style.background = 'green';
             return;
         }
         Simon.resetGame();
     } else {
         Simon.strict = false;
-        $(this).toggleClass('faded');
+        this.classList.toggle('faded');
         if (Simon.start === false) {
             return;
         }
@@ -232,13 +229,26 @@ $('.button-strict').click(function() {
     }
 });
 
-$('.button-reset').click(function() {
-    $(this).fadeTo(350, 1, function() {
-        $(this).fadeTo(250, 0.6);
-    });
+Simon.resetButton.addEventListener('click', function() {
+    setTimeout(function() {
+        Simon.resetButton.style.opacity = 1;
+        setTimeout(function() {
+            Simon.resetButton.style.opacity = 0.6;
+        }, 450);
+    }, 350);
 
     if (Simon.start === false) {
         return;
     }
     Simon.resetGame();
 });
+
+for (var i = 0; i < Simon.inputPanels.length; i++) {
+    Simon.inputPanels[i].addEventListener('click', function(event) {
+        var click = event.target.id;
+        // console.log('Player move: ' + click);
+        Simon.player.push(click);
+        Simon.playerMove(click);
+        Simon.showPlayerMove(click);
+    });
+}
